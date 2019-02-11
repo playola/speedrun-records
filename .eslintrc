@@ -1,0 +1,15 @@
+{
+  "extends": "airbnb",
+  "globals": {
+    "window": true,
+    "document": true
+  },
+  "rules": {
+      "import/prefer-default-export": "off",
+      "quotes": ["error", "single", { "avoidEscape": true }],
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+  },
+  "settings": {
+    "import/resolver": "webpack"
+  }
+}
