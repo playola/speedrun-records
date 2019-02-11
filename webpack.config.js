@@ -25,10 +25,7 @@ module.exports = {
   resolve: {
     extensions: ['*', '.js', '.jsx'],
     alias: {
-      '#assets': path.resolve(__dirname, './src/client/assets'),
       '#components': path.resolve(__dirname, './src/client/components'),
-      '#containers': path.resolve(__dirname, './src/client/containers'),
-      '#routes': path.resolve(__dirname, './src/client/routes'),
       '#services': path.resolve(__dirname, './src/client/services'),
       '#store': path.resolve(__dirname, './src/client/store'),
       '#style': path.resolve(__dirname, './src/client/styles'),

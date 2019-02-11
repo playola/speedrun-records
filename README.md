@@ -1,9 +1,11 @@
 # Speedrun Records
-> Speedrun records list and detailed information
+> Speedrun records list and detailed information.
+
+Single page application with two pages: records list and record detail. The project was bootstrapped using `npm init`, and tested for the latest version of Chrome.
 
 ## Getting started
 ```
-git clone XXX
+git clone https://github.com/playola/speedrun-records.git
 
 cd speedrun-records
 

@@ -2,8 +2,9 @@ import express from 'express';
 import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet } from 'styled-components';
-import { App } from '../client/components';
+import Routes from '../client/routes';
 
 const app = express();
 const port = 3000;
@@ -34,9 +35,18 @@ app.get('/*', (req, res) => {
   const sheet = new ServerStyleSheet();
 
   /**
+   * Create React DOM element wrapped with store and routes providers.
+   */
+  const ReactDomProvider = () => (
+    <StaticRouter context={{}} location={req.url}>
+      <Routes />
+    </StaticRouter>
+  );
+
+  /**
    * Define body, styles and title for the HTML template.
    */
-  const html = renderToString(sheet.collectStyles(<App />));
+  const html = renderToString(sheet.collectStyles(<ReactDomProvider />));
   const styles = sheet.getStyleTags();
   const title = 'Speedrun records';
 
