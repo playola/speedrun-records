@@ -10,7 +10,7 @@ import {
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={RecordsList} />
-    <Route path="/record-detail/:index" component={RecordDetails} />
+    <Route path="/record-detail" component={RecordDetails} />
   </Switch>
 );
 

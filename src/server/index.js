@@ -1,15 +1,23 @@
+import 'babel-polyfill';
 import express from 'express';
 import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { Provider as StoreProvider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet } from 'styled-components';
+import createStore from '../client/store';
 import Routes from '../client/routes';
 
 const app = express();
 const port = 3000;
 
-const htmlTemplate = (html, styles, title) => (
+const htmlTemplate = (
+  html,
+  styles,
+  title,
+  reduxState,
+) => (
   `
     <!DOCTYPE html>
     <head>
@@ -21,6 +29,9 @@ const htmlTemplate = (html, styles, title) => (
     </head>
     <body>
       <div id="root">${html}</div>
+      <script>
+        window.REDUX_DATA = ${JSON.stringify(reduxState)}
+      </script>
     </body>
     </html>
   `
@@ -33,14 +44,21 @@ app.get('/*', (req, res) => {
    * Create server style sheet to inject the styled components.
    */
   const sheet = new ServerStyleSheet();
+  /**
+   * Create Redux store and get the state.
+   */
+  const store = createStore;
+  const reduxState = store.getState();
 
   /**
    * Create React DOM element wrapped with store and routes providers.
    */
   const ReactDomProvider = () => (
-    <StaticRouter context={{}} location={req.url}>
-      <Routes />
-    </StaticRouter>
+    <StoreProvider store={store}>
+      <StaticRouter context={{}} location={req.url}>
+        <Routes />
+      </StaticRouter>
+    </StoreProvider>
   );
 
   /**
@@ -51,7 +69,7 @@ app.get('/*', (req, res) => {
   const title = 'Speedrun records';
 
   res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.end(htmlTemplate(html, styles, title));
+  res.end(htmlTemplate(html, styles, title, reduxState));
 });
 
 app.listen(port);
