@@ -9,6 +9,7 @@
   },
   "rules": {
       "import/prefer-default-export": "off",
+      "no-shadow": "off",
       "quotes": ["error", "single", { "avoidEscape": true }],
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
   },

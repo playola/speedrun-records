@@ -3,10 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider as StoreProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import createStore from './store';
+import store from './store';
 import Routes from './routes';
-
-const store = createStore(window.REDUX_DATA);
 
 const AppProvider = () => (
   <StoreProvider store={store}>

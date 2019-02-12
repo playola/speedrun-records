@@ -7,11 +7,11 @@ import recordsListReducer from './index';
 
 const initialState = {
   records: [],
-  success: false,
+  loading: false,
   error: null,
 };
 
-const recordsListMock = {};
+const recordsListMock = [];
 
 describe('recordsListReducer', () => {
   it('should return initial state when action is undefined', () => {
@@ -24,7 +24,7 @@ describe('recordsListReducer', () => {
     };
     expect(recordsListReducer(initialState, action)).toEqual({
       ...initialState,
-      success: false,
+      loading: true,
     });
   });
 
@@ -36,7 +36,7 @@ describe('recordsListReducer', () => {
 
     expect(recordsListReducer(initialState, action)).toEqual({
       ...initialState,
-      success: true,
+      loading: false,
       records: action.response,
     });
   });
@@ -51,7 +51,7 @@ describe('recordsListReducer', () => {
 
     expect(recordsListReducer(initialState, action)).toEqual({
       ...initialState,
-      success: false,
+      loading: false,
       error: action.error,
     });
   });

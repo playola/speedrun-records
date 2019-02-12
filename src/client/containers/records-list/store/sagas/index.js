@@ -1,5 +1,5 @@
 import {
-  put, takeLatest, fork, all,
+  put, takeLatest, fork, all, call,
 } from 'redux-saga/effects';
 import { getRecords as getRecordsService } from '../../../../services/speedrun';
 import { GET_RECORDS_REQUEST } from '../actions/types';
@@ -10,9 +10,8 @@ import {
 
 export function* getRecords() {
   try {
-    const response = yield getRecordsService();
-    console.log('getRecords response', response);
-    yield put(getRecordsSuccess(response.data));
+    const response = yield call(getRecordsService);
+    yield put(getRecordsSuccess(response.data.data));
   } catch (err) {
     yield put(getRecordsFailure(err));
   }

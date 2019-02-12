@@ -1,50 +1,53 @@
-/**
- * TODO: fix Sagas tests.
- * The tests are not working due to a 'redux-saga-test-plan' issue.
- * An error is displayed when running 'npm run test' regarding the module.
- */
-
 import { testSaga } from 'redux-saga-test-plan';
 import { fork } from 'redux-saga/effects';
-import root, { getPokemons, watchGetPokemons } from './index';
-import { getPokemonsSuccess, getPokemonsFailure } from '../actions';
-import { GET_POKEMONS_REQUEST, GET_POKEMONS_SUCCESS, GET_POKEMONS_FAILURE } from '../actions/types';
+import { getRecords as getRecordsService } from '../../../../services/speedrun';
+import root, { getRecords, watchGetRecords } from './index';
+import { getRecordsSuccess, getRecordsFailure } from '../actions';
+import {
+  GET_RECORDS_REQUEST,
+  GET_RECORDS_SUCCESS,
+  GET_RECORDS_FAILURE,
+} from '../actions/types';
 
-const pokemonListMock = [{ name: 'foo' }, { name: 'boo' }];
-
-describe('Pokemon list saga', () => {
-  const response = pokemonListMock;
+describe('Records list saga', () => {
+  const response = {
+    data: {
+      data: [{ name: 'foo' }, { name: 'boo' }],
+    },
+  };
   const errorMessage = '404 not found';
 
-  it('getPokemons success', () => {
+  it('getRecords success', () => {
     const result = {
-      type: GET_POKEMONS_SUCCESS,
-      response,
+      type: GET_RECORDS_SUCCESS,
+      response: response.data.data,
     };
-    testSaga(getPokemons)
+    testSaga(getRecords)
+      .next()
+      .call(getRecordsService)
       .next(response)
-      .put(getPokemonsSuccess(response))
+      .put(getRecordsSuccess(response.data.data))
       .next(result)
       .isDone();
   });
 
-  it('getPokemons error', () => {
+  it('getRecords error', () => {
     const error = {
-      type: GET_POKEMONS_FAILURE,
+      type: GET_RECORDS_FAILURE,
       error: errorMessage,
     };
-    testSaga(getPokemons)
+    testSaga(getRecords)
+      .next()
       .throw(errorMessage)
-      .put(getPokemonsFailure(errorMessage))
+      .put(getRecordsFailure(errorMessage))
       .next(error)
       .isDone();
   });
 
-  it('watchGetPokemons', () => {
-    testSaga(watchGetPokemons)
+  it('watchGetRecords', () => {
+    testSaga(watchGetRecords)
       .next()
-      .take(GET_POKEMONS_REQUEST)
-      .fork(getPokemons)
+      .takeLatestEffect(GET_RECORDS_REQUEST, getRecords)
       .finish()
       .isDone();
   });
@@ -52,7 +55,7 @@ describe('Pokemon list saga', () => {
   it('root', () => {
     testSaga(root)
       .next()
-      .all([fork(watchGetPokemons)])
+      .all([fork(watchGetRecords)])
       .next()
       .isDone();
   });

@@ -6,38 +6,14 @@ import { renderToString } from 'react-dom/server';
 import { Provider as StoreProvider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet } from 'styled-components';
-import createStore from '../client/store';
+import store from '../client/store';
 import Routes from '../client/routes';
+import { htmlTemplate } from './htmlTemplate';
 
 const app = express();
 const port = 3000;
 
-const htmlTemplate = (
-  html,
-  styles,
-  title,
-  reduxState,
-) => (
-  `
-    <!DOCTYPE html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta name="theme-color" content="#000000">
-      <title>${title}</title>
-      ${styles}
-    </head>
-    <body>
-      <div id="root">${html}</div>
-      <script>
-        window.REDUX_DATA = ${JSON.stringify(reduxState)}
-      </script>
-    </body>
-    </html>
-  `
-);
-
-app.use(express.static(path.resolve(__dirname, '../dist')));
+app.use(express.static(path.resolve(__dirname, '../../dist')));
 
 app.get('/*', (req, res) => {
   /**
@@ -45,9 +21,8 @@ app.get('/*', (req, res) => {
    */
   const sheet = new ServerStyleSheet();
   /**
-   * Create Redux store and get the state.
+   * Get state from Redux store.
    */
-  const store = createStore;
   const reduxState = store.getState();
 
   /**
