@@ -10,6 +10,7 @@ const RecordDetailsWrapper = styled.div`
 
 const RecordDetails = React.memo(({ recordDetails, getRecordDetails, match }) => {
   console.log('recordDetails', recordDetails);
+  console.log('match.params.id', match.params.id);
   useEffect(() => {
     getRecordDetails(match.params.id);
   }, []);

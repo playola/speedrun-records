@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getRecords } from './store/actions';
-
-const RecordsListWrapper = styled.div`
-  background-color: beige;
-`;
+import {
+  RecordsListWrapper,
+  Title,
+  RecordItemWrapper,
+  Logo,
+  Text,
+} from './styles';
 
 const RecordsList = React.memo(({ recordsList, getRecords }) => {
   console.log('recordsList', recordsList);
@@ -17,14 +19,15 @@ const RecordsList = React.memo(({ recordsList, getRecords }) => {
 
   return (
     <RecordsListWrapper>
-      <h1>Records list</h1>
+      <Title>Records list</Title>
       { recordsList && recordsList.length > 0 && recordsList.map(record => (
-        <div key={record.id}>
-          <span>
+        <RecordItemWrapper key={record.id}>
+          <Logo src={record.assets.logo.uri} alt={`logo_${record.id}`} />
+          <Text>
             { record.names.international }
-          </span>
+          </Text>
           <Link to={`/record-detail/${record.id}`}><p>Go</p></Link>
-        </div>
+        </RecordItemWrapper>
       ))}
     </RecordsListWrapper>
   );
