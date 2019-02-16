@@ -25,7 +25,7 @@ describe('Speedrun service', () => {
         data: { name: 'foo' },
       },
     };
-    mock.onGet(`${baseUrl}/games/k6qqkx6g`).reply(200, dataMock);
+    mock.onGet(`${baseUrl}/games/k6qqkx6g/records`).reply(200, dataMock);
 
     getRecordDetails('k6qqkx6g').then((response) => {
       expect(response.data).toEqual(dataMock);

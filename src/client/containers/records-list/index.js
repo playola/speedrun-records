@@ -1,35 +1,34 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getRecords } from './store/actions';
+import { ContainerWrapper, Title } from '../styles';
 import {
-  RecordsListWrapper,
-  Title,
   RecordItemWrapper,
   Logo,
   Text,
+  StyledLink,
 } from './styles';
 
 const RecordsList = React.memo(({ recordsList, getRecords }) => {
-  console.log('recordsList', recordsList);
   useEffect(() => {
     getRecords();
   }, []);
 
   return (
-    <RecordsListWrapper>
+    <ContainerWrapper>
       <Title>Records list</Title>
       { recordsList && recordsList.length > 0 && recordsList.map(record => (
-        <RecordItemWrapper key={record.id}>
-          <Logo src={record.assets.logo.uri} alt={`logo_${record.id}`} />
-          <Text>
-            { record.names.international }
-          </Text>
-          <Link to={`/record-detail/${record.id}`}><p>Go</p></Link>
-        </RecordItemWrapper>
+        <StyledLink key={record.id} to={`/record-detail/${record.id}`}>
+          <RecordItemWrapper>
+            <Logo src={record.assets.logo.uri} alt={`logo_${record.id}`} />
+            <Text>
+              { record.names.international }
+            </Text>
+          </RecordItemWrapper>
+        </StyledLink>
       ))}
-    </RecordsListWrapper>
+    </ContainerWrapper>
   );
 });
 

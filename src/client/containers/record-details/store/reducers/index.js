@@ -5,7 +5,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  recordDetails: {},
+  recordDetails: [],
   loading: false,
   error: null,
 };

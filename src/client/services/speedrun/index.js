@@ -7,5 +7,5 @@ export const getRecords = () => (
 );
 
 export const getRecordDetails = id => (
-  axios.get(`${baseUrl}/games/${id}`)
+  axios.get(`${baseUrl}/games/${id}/records`)
 );

@@ -34,8 +34,13 @@ Client have all the logic for the client's side:
 
 Server contains the Express server with the Server Side Rendering (SSR) logic.
 
+## Improvements
+TODO
+
 ## References
 * https://reactjs.org/docs/react-dom-server.html
 * https://medium.freecodecamp.org/demystifying-reacts-server-side-render-de335d408fe4
 * https://www.styled-components.com/docs/advanced#server-side-rendering
 * https://medium.com/styled-components/the-simple-guide-to-server-side-rendering-react-with-styled-components-d31c6b2b8fbf
+* https://github.com/speedruncomorg/api/blob/master/version1/games.md
+* https://stackoverflow.com/questions/29718481/unexpected-token-error-in-react-router-component

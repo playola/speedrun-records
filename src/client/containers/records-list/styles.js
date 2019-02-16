@@ -1,14 +1,5 @@
 import styled from 'styled-components';
-
-export const RecordsListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-export const Title = styled.h1`
-  text-align: center;
-`;
+import { Link } from 'react-router-dom';
 
 export const RecordItemWrapper = styled.div`
   display: flex;
@@ -16,8 +7,13 @@ export const RecordItemWrapper = styled.div`
   align-items: center;
   border: 1px solid black;
   border-radius: 3px;
-  margin: 6px 0;
   padding: 6px 12px;
+  max-width: 768px;
+  width: 90%;
+
+  &:hover {
+    background-color: lightgray;
+  }
 `;
 
 export const Logo = styled.img`
@@ -30,4 +26,13 @@ export const Text = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 45%;
+`;
+
+export const StyledLink = styled(Link)`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 6px 0;
 `;
