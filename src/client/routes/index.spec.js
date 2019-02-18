@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router';
+import { renderRoutes } from 'react-router-config';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from '../store/reducers';
@@ -18,7 +19,7 @@ describe('Routes', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/random']}>
-          <Routes />
+          { renderRoutes(Routes) }
         </MemoryRouter>
       </Provider>,
     );
@@ -34,7 +35,7 @@ describe('Routes', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
-          <Routes />
+          { renderRoutes(Routes) }
         </MemoryRouter>
       </Provider>,
     );

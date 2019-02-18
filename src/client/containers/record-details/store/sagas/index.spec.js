@@ -1,12 +1,28 @@
 import { testSaga } from 'redux-saga-test-plan';
 import { fork } from 'redux-saga/effects';
-import { getRecordDetails as getRecordDetailsService } from '../../../../services/speedrun';
-import root, { getRecordDetails, watchGetRecordDetails } from './index';
-import { getRecordDetailsSuccess, getRecordDetailsFailure } from '../actions';
+import {
+  getRecordDetails as getRecordDetailsService,
+  getPlayerInformation as getPlayerInformationService,
+} from '../../../../services/speedrun';
+import root, {
+  getRecordDetails,
+  getPlayerInformation,
+  watchGetRecordDetails,
+  watchGetPlayerInformation,
+} from './index';
+import {
+  getRecordDetailsSuccess,
+  getRecordDetailsFailure,
+  getPlayerInformationSuccess,
+  getPlayerInformationFailure,
+} from '../actions';
 import {
   GET_RECORD_DETAILS_REQUEST,
   GET_RECORD_DETAILS_SUCCESS,
   GET_RECORD_DETAILS_FAILURE,
+  GET_PLAYER_INFORMATION_REQUEST,
+  GET_PLAYER_INFORMATION_SUCCESS,
+  GET_PLAYER_INFORMATION_FAILURE,
 } from '../actions/types';
 
 describe('Record details saga', () => {
@@ -47,6 +63,33 @@ describe('Record details saga', () => {
       .isDone();
   });
 
+  it('getPlayerInformation success', () => {
+    const result = {
+      type: GET_PLAYER_INFORMATION_SUCCESS,
+      response: response.data.data,
+    };
+    testSaga(getPlayerInformation, payload)
+      .next()
+      .call(getPlayerInformationService, payload.id)
+      .next(response)
+      .put(getPlayerInformationSuccess(response.data.data))
+      .next(result)
+      .isDone();
+  });
+
+  it('getPlayerInformation error', () => {
+    const error = {
+      type: GET_PLAYER_INFORMATION_FAILURE,
+      error: errorMessage,
+    };
+    testSaga(getPlayerInformation, payload)
+      .next()
+      .throw(errorMessage)
+      .put(getPlayerInformationFailure(errorMessage))
+      .next(error)
+      .isDone();
+  });
+
   it('watchGetRecordDetails', () => {
     testSaga(watchGetRecordDetails)
       .next()
@@ -55,10 +98,21 @@ describe('Record details saga', () => {
       .isDone();
   });
 
+  it('watchGetPlayerInformation', () => {
+    testSaga(watchGetPlayerInformation)
+      .next()
+      .takeLatestEffect(GET_PLAYER_INFORMATION_REQUEST, getPlayerInformation)
+      .finish()
+      .isDone();
+  });
+
   it('root', () => {
     testSaga(root)
       .next()
-      .all([fork(watchGetRecordDetails)])
+      .all([
+        fork(watchGetRecordDetails),
+        fork(watchGetPlayerInformation),
+      ])
       .next()
       .isDone();
   });
