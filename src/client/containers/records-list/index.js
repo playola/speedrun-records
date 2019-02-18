@@ -40,6 +40,11 @@ RecordsList.propTypes = {
   getRecords: PropTypes.func.isRequired,
 };
 
+/**
+ * Expose dispatch action for SSR.
+ */
+export const loadData = ({ dispatch }) => dispatch(getRecords());
+
 const mapStateToProps = ({ recordsListReducer }) => ({
   recordsList: recordsListReducer.records,
 });

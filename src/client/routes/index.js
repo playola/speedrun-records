@@ -1,6 +1,3 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-
 // Containers routes
 import {
   RecordsList,
@@ -8,12 +5,27 @@ import {
   NotFoundPage,
 } from '../containers';
 
-const Routes = () => (
-  <Switch>
-    <Route exact path="/" component={RecordsList} />
-    <Route path="/record-detail/:id" component={RecordDetails} />
-    <Route component={NotFoundPage} />
-  </Switch>
-);
+// Containers load data
+import { loadData as loadRecordsListData } from '../containers/records-list';
+import { loadData as loadRecordDetailsData } from '../containers/record-details';
+
+const Routes = [
+  {
+    path: '/',
+    exact: true,
+    component: RecordsList,
+    loadData: loadRecordsListData,
+  },
+  {
+    path: '/record-detail/:id',
+    exact: true,
+    component: RecordDetails,
+    loadData: loadRecordDetailsData,
+  },
+  {
+    path: '*',
+    component: NotFoundPage,
+  },
+];
 
 export default Routes;

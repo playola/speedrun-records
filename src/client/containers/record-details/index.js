@@ -9,7 +9,7 @@ import {
   Title,
   Logo,
 } from '../styles';
-
+import { PlayerInformationWrapper } from './styles';
 /**
  * Get the first player run details.
  * @param   {array}   recordDetails [{ place: 1, runs: { run: { ... } } }]
@@ -76,7 +76,7 @@ const RecordDetails = React.memo(({
     <ContainerWrapper>
       <Title>Record details</Title>
       { firstPlayer && (
-        <div>
+        <PlayerInformationWrapper>
           <p>{`Game: ${gameName.international}`}</p>
           <Logo src={gameAssets.icon.uri} alt="" />
           <p>{`ID: ${id}`}</p>
@@ -86,7 +86,7 @@ const RecordDetails = React.memo(({
           <a href={videos.links[0].uri}>
             <Button>See video</Button>
           </a>
-        </div>
+        </PlayerInformationWrapper>
       )}
       <Link to="/">
         <Button>Go to records list</Button>
@@ -107,6 +107,11 @@ RecordDetails.propTypes = {
 RecordDetails.defaultProps = {
   recordsList: [],
 };
+
+/**
+ * Expose dispatch action for SSR.
+ */
+export const loadData = ({ dispatch }) => dispatch(getRecordDetails());
 
 const mapStateToProps = ({ recordDetailsReducer, recordsListReducer }) => ({
   recordDetails: recordDetailsReducer.recordDetails,
