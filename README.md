@@ -4,6 +4,7 @@
 Single page application with two pages: records list and record detail. The project was bootstrapped using `npm init`, and tested for the latest version of Chrome.
 
 ## Getting started
+
 ```
 git clone https://github.com/playola/speedrun-records.git
 
@@ -18,6 +19,7 @@ See http://localhost:3000/.
 ## Architecture
 
 ### Core libraries
+
 * React
 * Webpack
 * Prop Types
@@ -25,19 +27,27 @@ See http://localhost:3000/.
 * Jest
 
 ### Folder structure
+
 Client have all the logic for the client's side:
-1. Assets
-2. Containers
-3. Components
-4. Store
-5. Utils
+- Assets: static files like images or fonts.
+- Components: reusable stateless UI components.
+- Containers: pages wrappers for the routing.
+- Routes: defines the routing for the containers.
+- Services: API calls using 'axios'.
+- Store: application state where we combine reducers and fork sagas.
+- Style: styled components provider theme, breakpoints, and global styles.
+- Utils: reusable utilities and helpers.
 
 Server contains the Express server with the Server Side Rendering (SSR) logic.
 
 ## Improvements
-TODO
+
+* Server Side Rendering is not getting the initial state properly, because of the integration with Redux Saga middleware.
+* The tests are not fully completed.
+* If the application scales, it would be great to apply a Theme Provider, and reusable media queries.
 
 ## References
+
 * https://reactjs.org/docs/react-dom-server.html
 * https://medium.freecodecamp.org/demystifying-reacts-server-side-render-de335d408fe4
 * https://www.styled-components.com/docs/advanced#server-side-rendering
