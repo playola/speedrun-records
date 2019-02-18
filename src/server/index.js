@@ -1,14 +1,11 @@
 import 'babel-polyfill';
 import express from 'express';
 import path from 'path';
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { Provider as StoreProvider } from 'react-redux';
-import { StaticRouter } from 'react-router-dom';
-import { ServerStyleSheet } from 'styled-components';
-import store from '../client/store';
+import { matchRoutes } from 'react-router-config';
+import createStore from '../client/store';
 import Routes from '../client/routes';
 import { htmlTemplate } from './htmlTemplate';
+import { renderer } from './renderer';
 
 const app = express();
 const port = 3000;
@@ -16,35 +13,29 @@ const port = 3000;
 app.use(express.static(path.resolve(__dirname, '../../dist')));
 
 app.get('/*', (req, res) => {
-  /**
-   * Create server style sheet to inject the styled components.
-   */
-  const sheet = new ServerStyleSheet();
-  /**
-   * Get state from Redux store.
-   */
-  const reduxState = store.getState();
+  const store = createStore();
 
-  /**
-   * Create React DOM element wrapped with store and routes providers.
-   */
-  const ReactDomProvider = () => (
-    <StoreProvider store={store}>
-      <StaticRouter context={{}} location={req.url}>
-        <Routes />
-      </StaticRouter>
-    </StoreProvider>
-  );
+  const loadRouteDependencies = (location, store) => {
+    const dataRequirements = matchRoutes(Routes, location)
+      .filter(({ route }) => route.component && route.loadData)
+      .map(({ route }) => route.loadData(store));
+    return Promise.all(dataRequirements);
+  };
 
-  /**
-   * Define body, styles and title for the HTML template.
-   */
-  const html = renderToString(sheet.collectStyles(<ReactDomProvider />));
-  const styles = sheet.getStyleTags();
-  const title = 'Speedrun records';
+  loadRouteDependencies(req.path, store).then(() => {
+    /**
+     * Get render elements.
+     */
+    const { html, styles, title } = renderer(store, req.path);
 
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.end(htmlTemplate(html, styles, title, reduxState));
+    /**
+     * Get state from Redux store.
+     */
+    const reduxState = store.getState();
+
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(htmlTemplate(html, styles, title, reduxState));
+  });
 });
 
 app.listen(port);

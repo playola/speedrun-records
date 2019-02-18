@@ -44,3 +44,5 @@ TODO
 * https://medium.com/styled-components/the-simple-guide-to-server-side-rendering-react-with-styled-components-d31c6b2b8fbf
 * https://github.com/speedruncomorg/api/blob/master/version1/games.md
 * https://stackoverflow.com/questions/29718481/unexpected-token-error-in-react-router-component
+* https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
+* https://stackoverflow.com/questions/52713185/typeerror-router2-default-computerootmatch-is-not-a-function-on-react-router

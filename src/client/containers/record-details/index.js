@@ -57,6 +57,11 @@ RecordDetails.propTypes = {
   match: PropTypes.shape({}).isRequired,
 };
 
+/**
+ * Expose dispatch action for SSR.
+ */
+export const loadData = ({ dispatch }) => dispatch(getRecordDetails());
+
 const mapStateToProps = ({ recordDetailsReducer }) => ({
   recordDetails: recordDetailsReducer.recordDetails,
 });
