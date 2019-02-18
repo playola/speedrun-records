@@ -16,11 +16,6 @@ export const RecordItemWrapper = styled.div`
   }
 `;
 
-export const Logo = styled.img`
-  width: 100px;
-  height: 30px;
-`;
-
 export const Text = styled.span`
   white-space: nowrap;
   overflow: hidden;

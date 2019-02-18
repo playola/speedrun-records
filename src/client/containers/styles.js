@@ -14,3 +14,10 @@ export const ContainerWrapper = styled.div`
 export const Title = styled.h1`
   text-align: center;
 `;
+
+export const Logo = styled.img`
+  height: 30px;
+  background-color: lightgray;
+  padding: 10px;
+  border-radius: 4px;
+`;

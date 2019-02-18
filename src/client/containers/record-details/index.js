@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getRecordDetails } from './store/actions';
+import { getRecordDetails, getPlayerInformation } from './store/actions';
 import { Button } from '../../components';
-import { ContainerWrapper, Title } from '../styles';
+import {
+  ContainerWrapper,
+  Title,
+  Logo,
+} from '../styles';
 
 /**
  * Get the first player run details.
@@ -15,28 +19,68 @@ const getFirstPlayer = recordDetails => (
   recordDetails && recordDetails.length > 0 && recordDetails[0].runs[0].run
 );
 
-const RecordDetails = React.memo(({ recordDetails, getRecordDetails, match }) => {
+const RecordDetails = React.memo(({
+  recordDetails,
+  getRecordDetails,
+  playerInformation,
+  getPlayerInformation,
+  recordsList,
+  match,
+}) => {
   /**
-   * Get record details by id when the component mounts.
+   * Set first player initial state.
+   */
+  const [firstPlayer, setFirstPlayer] = useState(getFirstPlayer(recordDetails));
+
+  /**
+   * Fetch record details by id when the component mounts.
    */
   useEffect(() => {
     getRecordDetails(match.params.id);
   }, []);
 
   /**
-   * Get first player and destructuring util parameters.
+   * Update first player every time we have a change in the record details.
    */
-  const firstPlayer = getFirstPlayer(recordDetails);
-  const {
-    id, players, times, videos,
-  } = firstPlayer;
+  useEffect(() => {
+    setFirstPlayer(getFirstPlayer(recordDetails));
+  }, [recordDetails]);
+
+  /**
+   * Fetch player's information when first player changes.
+   */
+  useEffect(() => {
+    const playerId = firstPlayer && firstPlayer.players[0].id;
+    if (playerId) {
+      getPlayerInformation(playerId);
+    }
+  }, [firstPlayer]);
+
+  const { id, times, videos } = firstPlayer;
+  const { names } = playerInformation;
+
+  /**
+   * Get name and logo from records list data.
+   */
+  const currentRecord = recordsList && recordsList.find(record => record.id === match.params.id);
+  const { names: gameName, assets: gameAssets } = currentRecord || {
+    names: {
+      international: 'Name not found',
+    },
+    assets: {
+      icon: { uri: 'Icon not found' },
+    },
+  };
+
   return (
     <ContainerWrapper>
       <Title>Record details</Title>
       { firstPlayer && (
         <div>
+          <p>{`Game: ${gameName.international}`}</p>
+          <Logo src={gameAssets.icon.uri} alt="" />
           <p>{`ID: ${id}`}</p>
-          <p>{`Player: ${players[0].rel}`}</p>
+          <p>{`Player: ${(names && names.international) || 'loading...'}`}</p>
           <p>{`Primary time: ${times.primary_t}`}</p>
           <p>{`Real time: ${times.realtime_t}`}</p>
           <a href={videos.links[0].uri}>
@@ -54,15 +98,25 @@ const RecordDetails = React.memo(({ recordDetails, getRecordDetails, match }) =>
 RecordDetails.propTypes = {
   recordDetails: PropTypes.arrayOf(PropTypes.object).isRequired,
   getRecordDetails: PropTypes.func.isRequired,
+  playerInformation: PropTypes.shape({}).isRequired,
+  getPlayerInformation: PropTypes.func.isRequired,
+  recordsList: PropTypes.arrayOf(PropTypes.object),
   match: PropTypes.shape({}).isRequired,
 };
 
-const mapStateToProps = ({ recordDetailsReducer }) => ({
+RecordDetails.defaultProps = {
+  recordsList: [],
+};
+
+const mapStateToProps = ({ recordDetailsReducer, recordsListReducer }) => ({
   recordDetails: recordDetailsReducer.recordDetails,
+  playerInformation: recordDetailsReducer.playerInformation,
+  recordsList: recordsListReducer.records,
 });
 
 const mapDispatchToProps = {
   getRecordDetails,
+  getPlayerInformation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecordDetails);

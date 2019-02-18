@@ -9,3 +9,7 @@ export const getRecords = () => (
 export const getRecordDetails = id => (
   axios.get(`${baseUrl}/games/${id}/records`)
 );
+
+export const getPlayerInformation = id => (
+  axios.get(`${baseUrl}/users/${id}`)
+);

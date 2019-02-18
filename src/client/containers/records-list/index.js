@@ -2,10 +2,13 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getRecords } from './store/actions';
-import { ContainerWrapper, Title } from '../styles';
+import {
+  ContainerWrapper,
+  Title,
+  Logo,
+} from '../styles';
 import {
   RecordItemWrapper,
-  Logo,
   Text,
   StyledLink,
 } from './styles';
@@ -21,7 +24,7 @@ const RecordsList = React.memo(({ recordsList, getRecords }) => {
       { recordsList && recordsList.length > 0 && recordsList.map(record => (
         <StyledLink key={record.id} to={`/record-detail/${record.id}`}>
           <RecordItemWrapper>
-            <Logo src={record.assets.logo.uri} alt={`logo_${record.id}`} />
+            <Logo src={record.assets.icon.uri} alt={`logo_${record.id}`} />
             <Text>
               { record.names.international }
             </Text>
