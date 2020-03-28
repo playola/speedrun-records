@@ -14,7 +14,11 @@ export default () => {
     composeWithDevTools(middleWares),
   );
 
-  sagaMiddleware.run(rootSaga);
+  store.runSagaTask = () => {
+    store.sagaTask = sagaMiddleware.run(rootSaga);
+  };
+
+  store.runSagaTask();
 
   return store;
 };

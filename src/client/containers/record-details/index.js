@@ -10,6 +10,7 @@ import {
   Logo,
 } from '../styles';
 import { PlayerInformationWrapper } from './styles';
+
 /**
  * Get the first player run details.
  * @param   {array}   recordDetails [{ place: 1, runs: { run: { ... } } }]
